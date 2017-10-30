@@ -3,19 +3,12 @@ set -e
 
 service_host=$1
 service_id=$2
+service_path=$3
 
 cat >>/usr/local/etc/haproxy/haproxy.cfg <<EOL
 global
     pidfile /var/run/haproxy.pid
-    tune.ssl.default-dh-param 2048
     log 127.0.0.1:1514 local0
-
-    # disable sslv3, prefer modern ciphers
-    ssl-default-bind-options no-sslv3
-    ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
-
-    ssl-default-server-options no-sslv3
-    ssl-default-server-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
 
 resolvers docker
     nameserver dns 127.0.0.11:53
@@ -43,12 +36,12 @@ frontend services
 
     option httplog
     log global
-    acl url_service_front path_beg /
-    acl domain_service_front hdr(host) -i ${service_host}
-    use_backend service_back if url_service_front domain_service_front
+    acl url_${service_id}_front path_beg ${service_path}
+    acl domain_${service_id}_front hdr(host) -i ${service_host}
+    use_backend ${service_id}_back if url_${service_id}_front domain_${service_id}_front
 
-backend service_back
+backend ${service_id}_back
     mode http
     log global
-    server ${service_id} ${service_id}:80
+    server ${service_id} ${service_id}:443
 EOL

@@ -3,6 +3,7 @@ MAINTAINER 	Mario Vejlupek <mario@vejlupek.cz>
 
 ENV service_id=change_service_id_var
 ENV service_host=change_service_host_var
+ENV service_path=change_service_path_var
 
 COPY entrypoint.sh /
 COPY haproxy-gen.sh /
