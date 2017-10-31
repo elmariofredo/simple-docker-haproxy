@@ -44,5 +44,5 @@ backend ${service_id}_back
     mode http
     log global
     http-request set-path %[path,regsub(${service_location},/)]
-    server ${service_id} ${service_id}:443
+    server ${service_id} ${service_id}:80
 EOL
