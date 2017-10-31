@@ -3,7 +3,7 @@ set -e
 
 service_host=$1
 service_id=$2
-service_path=$3
+service_location=$3
 
 cat >>/usr/local/etc/haproxy/haproxy.cfg <<EOL
 global
@@ -36,7 +36,7 @@ frontend services
 
     option httplog
     log global
-    acl url_${service_id}_front path_beg ${service_path}
+    acl url_${service_id}_front path_beg ${service_location}
     acl domain_${service_id}_front hdr(host) -i ${service_host}
     use_backend ${service_id}_back if url_${service_id}_front domain_${service_id}_front
 
