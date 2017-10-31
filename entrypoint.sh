@@ -2,7 +2,7 @@
 set -e
 
 # Generate haproxy config using command arguments
-/haproxy-gen.sh ${service_host} ${service_id} ${service_path} > /usr/local/etc/haproxy/haproxy.cfg
+/haproxy-gen.sh ${service_host} ${service_id} ${service_location} > /usr/local/etc/haproxy/haproxy.cfg
 
 echo "=== GENERATED PROXY CONFIG ===>"
 cat /usr/local/etc/haproxy/haproxy.cfg
