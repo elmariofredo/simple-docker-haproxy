@@ -37,12 +37,12 @@ frontend services
     option httplog
     log global
     acl url_${service_id}_front path_beg ${service_location}
-    acl domain_${service_id}_front hdr(host) -i ${service_host}
-    use_backend ${service_id}_back if url_${service_id}_front domain_${service_id}_front
+    use_backend ${service_id}_back
 
 backend ${service_id}_back
     mode http
     log global
     http-request set-path %[path,regsub(${service_location},/)]
-    server ${service_id} ${service_id}:80
+    http-request set-header Host ${service_host}
+    server ${service_id} ${service_id}:${service_port}
 EOL
