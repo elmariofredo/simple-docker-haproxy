@@ -42,7 +42,6 @@ frontend services
 backend ${service_id}_back
     mode http
     log global
-    http-request set-path %[path,regsub(${service_location},/)]
     http-request set-header Host ${service_host}
     server ${service_id} ${service_id}:${service_port}
 EOL
